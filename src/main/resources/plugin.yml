@@ -1,0 +1,5 @@
+name: SpineDebug
+version: 1.0.0
+main: me.jakepronger.spinedebug.SpineDebug
+author: JakePronger
+description: Test plugin for Spine library
