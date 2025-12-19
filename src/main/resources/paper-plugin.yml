@@ -1,0 +1,5 @@
+name: SpineDebug
+version: '1.0.0'
+main: me.jakepronger.spinedebug.SpineDebug
+description: Spine Test Plugin
+api-version: '1.21.11'

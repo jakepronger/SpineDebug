@@ -1,5 +1,8 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     id("java")
+    id("com.gradleup.shadow") version "8.3.5"
 }
 
 group = "me.jakepronger.spinedebug"
@@ -16,6 +19,15 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+tasks.named<ShadowJar>("shadowJar") {
+    archiveClassifier.set("")
+}
+
+// Make sure the standard 'build' command generates the Shadow JAR
+tasks.build {
+    dependsOn("shadowJar")
 }
 
 tasks.test {
