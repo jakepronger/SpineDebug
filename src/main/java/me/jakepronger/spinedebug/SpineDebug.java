@@ -42,7 +42,8 @@ public class SpineDebug extends JavaPlugin {
     }
 
     private void listeners() {
-        registry.listener(PlayerJoinEvent.class, new TestListener()::onJoin);
+        registry.listener(PlayerJoinEvent.class, new TestListener()::onJoin)
+                .register();
     }
 
     private void commands() {

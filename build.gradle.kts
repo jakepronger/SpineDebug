@@ -14,7 +14,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
 
     // Example of pulling a Git repo via JitPack (replace USER/REPO/BRANCH)
-    implementation("com.github.jakepronger:Spine:1.1.0")
+    implementation("com.github.jakepronger:Spine:1.1.1")
 
 
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
