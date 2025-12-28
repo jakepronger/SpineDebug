@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.maven
-
 rootProject.name = "SpineDebug"
 
 dependencyResolutionManagement {
