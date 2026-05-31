@@ -6,24 +6,16 @@ import me.jakepronger.spine.api.command.CommandContext;
 import me.jakepronger.spine.api.contract.Feature;
 import me.jakepronger.spine.enums.Permission;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
-public class Test implements Feature {
-
-    JavaPlugin plugin;
-
+public class TestOLD implements Feature {
     @Override
     public void load(SpineAPI api) {
-        plugin = api.plugin();
         api.command("test", this::command)
                 .description("Test command")
                 .alias("test1")
@@ -36,17 +28,19 @@ public class Test implements Feature {
         if (ctx.isPlayer()){
             ctx.player().sendMessage("hi player: " + ctx.player().getName());
 
-            // Swapping to a SHIELD baseline forces the client to render the arm bones
-            ItemStack item = new ItemStack(Material.SHIELD);
+            // Crucial: Swapping to a 2D item baseline so the block-rendering panic stops!
+            ItemStack item = new ItemStack(Material.KNOWLEDGE_BOOK);
             ItemMeta meta = item.getItemMeta();
 
             if (meta != null) {
-                // Erases the shield geometry, leaving only the arm rendering branch active
+                // Points to your lowered hand layout
                 meta.setItemModel(NamespacedKey.minecraft("air"));
                 meta.displayName(Component.empty());
+
+                // Fully blanks out the item tooltip hover text in the inventory UI
                 meta.setHideTooltip(true);
 
-                // Outlines stay completely active
+                // Your adventure mode blocks remain completely functional here
                 Set<Material> set = Set.of(Material.GRASS_BLOCK);
                 meta.setCanDestroy(set);
 
@@ -54,23 +48,6 @@ public class Test implements Feature {
             }
 
             ctx.player().getInventory().setItemInMainHand(item);
-
-            org.bukkit.craftbukkit.entity.CraftPlayer craftPlayer = (org.bukkit.craftbukkit.entity.CraftPlayer) ctx.player();
-            net.minecraft.server.level.ServerPlayer nmsPlayer = craftPlayer.getHandle();
-
-            // Send an explicit packet telling the client this slot is completely EMPTY
-            // net.minecraft.world.item.ItemStack.EMPTY represents absolute air/nothingness on the wire
-            net.minecraft.network.protocol.game.ClientboundSetEquipmentPacket clearPacket =
-                    new net.minecraft.network.protocol.game.ClientboundSetEquipmentPacket(
-                            nmsPlayer.getId(),
-                            List.of(com.mojang.datafixers.util.Pair.of(
-                                    net.minecraft.world.entity.EquipmentSlot.MAINHAND,
-                                    net.minecraft.world.item.ItemStack.EMPTY
-                            ))
-                    );
-
-            // Fire it down the line
-            nmsPlayer.connection.send(clearPacket);
 
         } else {
             ctx.sender().sendMessage("hi console!");
