@@ -31,7 +31,7 @@ public class SpineDebug extends JavaPlugin {
     private void features() {
         spine.feature(Test.class);
         PluginManager pm = getServer().getPluginManager();
-        pm.registerEvents(new TestListener(), this);
+        pm.registerEvents(new TestListener(this), this);
     }
 
 }

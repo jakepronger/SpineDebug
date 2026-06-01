@@ -1,6 +1,8 @@
 package me.jakepronger.spinedebug.listeners;
 
+import me.jakepronger.spinedebug.SpineDebug;
 import net.kyori.adventure.text.Component;
+import net.minecraft.data.Main;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.BlockDisplay;
@@ -12,6 +14,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Transformation;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -20,13 +23,21 @@ import java.util.Set;
 
 public class TestListener implements Listener {
 
+    private JavaPlugin plugin;
+    public TestListener(JavaPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         event.getPlayer().sendMessage("hi labubu");
     }
 
+    private int taskID;
+
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
+        /*
         e.getPlayer().sendMessage("debug 1 playterinteractevent: " + e.getAction().isLeftClick());
         if (!e.getAction().isLeftClick())
             return;
@@ -42,6 +53,30 @@ public class TestListener implements Listener {
         item.setItemMeta(meta);
         p.getInventory().setItemInMainHand(item);
         e.getPlayer().sendMessage("isHandRaised? " + p.isHandRaised());
+        e.getPlayer().isHandRaised();
+         */
+        if (e.getClickedBlock() == null)
+            return;
+        Block b = e.getClickedBlock();
+        if (b.getType() != Material.GRASS_BLOCK)
+            return;
+        Player p = e.getPlayer();
+
+        if (taskID != 0) {
+            return;
+
+        if (p.getGameMode() != GameMode.SURVIVAL)
+            p.setGameMode(GameMode.SURVIVAL);
+
+        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+
+            @Override
+            public void run() {
+                if (p.)
+                p.setGameMode(GameMode.ADVENTURE);
+                taskID = 0;
+            }
+        }, 2, 2);
     }
 
 
