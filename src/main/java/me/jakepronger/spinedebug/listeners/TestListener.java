@@ -62,23 +62,26 @@ public class TestListener implements Listener {
             return;
         Player p = e.getPlayer();
 
-        if (taskID != 0) {
+        if (taskID != 0)
             return;
 
         if (p.getGameMode() != GameMode.SURVIVAL)
             p.setGameMode(GameMode.SURVIVAL);
 
-        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
 
-            @Override
-            public void run() {
-                if (p.)
+            p.sendMessage("handRaised? " + p.isHandRaised());
+
+            if (!p.isHandRaised()) {
                 p.setGameMode(GameMode.ADVENTURE);
                 taskID = 0;
             }
+            else {
+                if (p.getGameMode() != GameMode.SURVIVAL)
+                    p.setGameMode(GameMode.SURVIVAL);
+            }
         }, 2, 2);
     }
-
 
     private Location blockLoc;
     private Set<Material> materials = Set.of(Material.GRASS_BLOCK);
